@@ -21,7 +21,7 @@ const gameBoard = (() => {
     //private
     const _fillBox = (elem) => {
         // guard against game not started
-        if (gameState.getCurrentPlayer() == 0) return;
+        if (gameState.getCurrentPlayer() == '') return;
 
         // guard against box already filled
         if (array[elem.dataset.box] != '') return;
@@ -43,12 +43,7 @@ const gameBoard = (() => {
     //public
     const place = (playerName, spot) => {
         //places an X or O. Assumes spot empty.
-        if (playerName == "x") {
-            array[spot] = 'X';
-        }
-        if (playerName == 'o') {
-            array[spot] = 'O';
-        }
+        array[spot] = playerName;
     }
 
     const getArray = () => array;
@@ -63,18 +58,28 @@ const gameBoard = (() => {
 
 const gameState = (() => {
 
-    const playerX = Player('x');
-    const playerO = Player('o');
-    let currentPlayer = Player(0);
+    const playerX = Player('X');
+    const playerO = Player('O');
+    let currentPlayer = Player('');
 
     
     //set up start button
     const startGame = () => {
         currentPlayer = playerX;
+        updatePlayerDisplay();
         gameBoard.reset();
     }
     const startGameButton = document.querySelector('.startButton');
     startGameButton.addEventListener('click', startGame);
+
+    // set up Current Player div
+    const getCurrentPlayer = () => {
+        return currentPlayer.getName();
+    }
+    const currentPlayerDisplay = document.querySelector('.playerDisplay');
+    const updatePlayerDisplay = () => {
+        currentPlayerDisplay.innerText = `${getCurrentPlayer()}`;
+    }
 
     const nextPlayer = () => {
         if (currentPlayer == playerX) {
@@ -84,16 +89,14 @@ const gameState = (() => {
         } else {
             console.log('no game started');
         }
+        updatePlayerDisplay();
     }
 
-    const getCurrentPlayer = () => {
-        return currentPlayer.getName();
-    }
 
     const checkGameOver = () => {
 
     }
 
     
-    return {startGame, getCurrentPlayer, nextPlayer, checkGameOver, playerX, playerO};
+    return {startGame, getCurrentPlayer, nextPlayer, checkGameOver, updatePlayerDisplay, playerX, playerO};
 })()
