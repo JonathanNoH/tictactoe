@@ -14,17 +14,23 @@ const gameBoard = (() => {
     // add eventlisteners to each button
     squares.forEach((elem) => {
         elem.addEventListener('click', () => {
-            _eventFunction(elem);
+            _fillBox(elem);
         })
     })
 
     //private
-    const _eventFunction = (elem) => {
+    const _fillBox = (elem) => {
+        // guard against game not started
         if (gameState.getCurrentPlayer() == 0) return;
-        // *** get the current player and then place based on which player
+
+        // guard against box already filled
+        if (array[elem.dataset.box] != '') return;
+
+        // get the current player and then place based on which player
         place(gameState.getCurrentPlayer(), elem.dataset.box);
-        _render();
         gameState.nextPlayer();
+        _render();
+        
     }
 
 
@@ -36,6 +42,7 @@ const gameBoard = (() => {
 
     //public
     const place = (playerName, spot) => {
+        //places an X or O. Assumes spot empty.
         if (playerName == "x") {
             array[spot] = 'X';
         }
