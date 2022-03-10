@@ -98,5 +98,5 @@ const gameState = (() => {
     }
 
     
-    return {startGame, getCurrentPlayer, nextPlayer, checkGameOver, updatePlayerDisplay, playerX, playerO};
+    return {startGame, getCurrentPlayer, nextPlayer, checkGameOver, updatePlayerDisplay};
 })()
