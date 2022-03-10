@@ -1,12 +1,8 @@
 const Player = (name) => {
-
+    const getName = () => name;
     
-    return {'name' : name};
+    return {getName};
 }
-
-
-const playerX = Player('x');
-const playerO = Player('o');
 
 const gameBoard = (() => {
     let array = ['', '', '', '', '', '', '', '', ''];
@@ -14,33 +10,48 @@ const gameBoard = (() => {
     // cache DOM
     const container = document.querySelector('.container');
     const squares = container.querySelectorAll('div');
+
+    // add eventlisteners to each button
     squares.forEach((elem) => {
         elem.addEventListener('click', () => {
             console.log(elem.dataset.box);
-            // ***
+            // *** get the current player and then place based on which player
+            place(gameState.getCurrentPlayer(), elem.dataset.box);
+            render();
         })
     })
 
-
-    function place(player, spot) {
-        if (player.name == "x") {
+    function place(playerName, spot) {
+        if (playerName == "x") {
             array[spot] = 'X';
         }
-        if (player.name == 'o') {
+        if (playerName == 'o') {
             array[spot] = 'O';
         }
-        render();
     }
 
-    function render() {
+    const render = () => {
         for (let i = 0; i < squares.length; i++) {
             squares[i].innerText = array[i];
         }
     }
 
-    function checkState() {
+    const getArray = () => array;
 
-    }
-    return {place};
+    return {place, getArray};
 })()
 
+const gameState = (() => {
+
+    const playerX = Player('x');
+    const playerO = Player('o');
+
+    
+
+    const getCurrentPlayer = () => {
+        return playerO.getName();
+    }
+
+    
+    return {getCurrentPlayer, playerX, playerO};
+})()
