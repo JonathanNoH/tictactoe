@@ -46,7 +46,12 @@ const gameBoard = (() => {
 
     const getArray = () => array;
 
-    return {place, getArray};
+    const reset = () => {
+        array = ['', '', '', '', '', '', '', '', ''];
+        _render();
+    }
+
+    return {place, getArray, reset};
 })()
 
 const gameState = (() => {
@@ -55,9 +60,14 @@ const gameState = (() => {
     const playerO = Player('o');
     let currentPlayer = Player(0);
 
+    
+    //set up start button
     const startGame = () => {
         currentPlayer = playerX;
+        gameBoard.reset();
     }
+    const startGameButton = document.querySelector('.startButton');
+    startGameButton.addEventListener('click', startGame);
 
     const nextPlayer = () => {
         if (currentPlayer == playerX) {
