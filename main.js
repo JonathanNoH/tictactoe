@@ -14,25 +14,33 @@ const gameBoard = (() => {
     // add eventlisteners to each button
     squares.forEach((elem) => {
         elem.addEventListener('click', () => {
-            console.log(elem.dataset.box);
-            // *** get the current player and then place based on which player
-            place(gameState.getCurrentPlayer(), elem.dataset.box);
-            render();
+            _eventFunction(elem);
         })
     })
 
-    function place(playerName, spot) {
+    //private
+    const _eventFunction = (elem) => {
+        if (gameState.getCurrentPlayer() == 0) return;
+        // *** get the current player and then place based on which player
+        place(gameState.getCurrentPlayer(), elem.dataset.box);
+        _render();
+        gameState.nextPlayer();
+    }
+
+
+    const _render = () => {
+        for (let i = 0; i < squares.length; i++) {
+            squares[i].innerText = array[i];
+        }
+    }
+
+    //public
+    const place = (playerName, spot) => {
         if (playerName == "x") {
             array[spot] = 'X';
         }
         if (playerName == 'o') {
             array[spot] = 'O';
-        }
-    }
-
-    const render = () => {
-        for (let i = 0; i < squares.length; i++) {
-            squares[i].innerText = array[i];
         }
     }
 
@@ -45,13 +53,30 @@ const gameState = (() => {
 
     const playerX = Player('x');
     const playerO = Player('o');
+    let currentPlayer = Player(0);
 
-    
+    const startGame = () => {
+        currentPlayer = playerX;
+    }
+
+    const nextPlayer = () => {
+        if (currentPlayer == playerX) {
+            currentPlayer = playerO;
+        } else if (currentPlayer == playerO) {
+            currentPlayer = playerX;
+        } else {
+            console.log('no game started');
+        }
+    }
 
     const getCurrentPlayer = () => {
-        return playerO.getName();
+        return currentPlayer.getName();
+    }
+
+    const checkGameOver = () => {
+
     }
 
     
-    return {getCurrentPlayer, playerX, playerO};
+    return {startGame, getCurrentPlayer, nextPlayer, checkGameOver, playerX, playerO};
 })()
