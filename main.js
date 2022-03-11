@@ -60,48 +60,27 @@ const gameBoard = (() => {
 
 const gameState = (() => {
 
+    //set up players
     const playerX = Player('X');
     const playerO = Player('O');
     const playerNull = Player('');
-
     let isGameGoing = false;
-    const getGameStatus = () => {
-        return isGameGoing;
-    }
-
     let currentPlayer = playerNull;
 
-    
-    //set up start button
-    const startGame = () => {
-        isGameGoing = true;
-        currentPlayer = playerX;
-        updatePlayerDisplay();
-        gameBoard.reset();
-    }
+    //set up DOM
+    const winnerDisplay = document.querySelector('.winnerDisplay');
     const startGameButton = document.querySelector('.startButton');
-    startGameButton.addEventListener('click', startGame);
-
-    // set up Current Player div
-    const getCurrentPlayer = () => {
-        return currentPlayer.getName();
-    }
     const currentPlayerDisplay = document.querySelector('.playerDisplay');
-    const updatePlayerDisplay = () => {
-        currentPlayerDisplay.innerText = `${getCurrentPlayer()}`;
+    const winnerElement = document.querySelector('.winner');
+    
+    //private functions
+    const _showWinnerDisplay = () => {
+        winnerDisplay.classList.remove('hidden');
+    }
+    const _hideWinnerDisplay = () => {
+        winnerDisplay.classList.add('hidden');
     }
 
-    const nextPlayer = () => {
-        //changes player to other player
-        if (currentPlayer == playerX) {
-            currentPlayer = playerO;
-        } else if (currentPlayer == playerO) {
-            currentPlayer = playerX;
-        } else {
-            console.log('no game started');
-        }
-        updatePlayerDisplay();
-    }
     const _getWinner = () => {
         //checks if game is over and returns 'O' or 'X' if there is a winner
         let array = gameBoard.getArray();
@@ -133,14 +112,54 @@ const gameState = (() => {
         return false;
     }
 
-    const checkGameOver = () => {
-        let winner = _getWinner();
-        if (!winner) return;
-        console.log(winner);
-        console.log('game over');
+    const _gameOver = (winner) => {
+        //does game over things
+        _showWinnerDisplay();
+        winnerElement.innerText = winner;
         currentPlayer = playerNull;
         updatePlayerDisplay();
         isGameGoing = false;
+    }
+
+
+    const getGameStatus = () => {
+        return isGameGoing;
+    }
+
+    //set up start button
+    const startGame = () => {
+        isGameGoing = true;
+        _hideWinnerDisplay();
+        currentPlayer = playerX;
+        updatePlayerDisplay();
+        gameBoard.reset();
+    }
+    startGameButton.addEventListener('click', startGame);
+
+    // set up Current Player div
+    const getCurrentPlayer = () => {
+        return currentPlayer.getName();
+    }
+    const updatePlayerDisplay = () => {
+        currentPlayerDisplay.innerText = `${getCurrentPlayer()}`;
+    }
+
+    const nextPlayer = () => {
+        //changes player to other player
+        if (currentPlayer == playerX) {
+            currentPlayer = playerO;
+        } else if (currentPlayer == playerO) {
+            currentPlayer = playerX;
+        } else {
+            console.log('no game started');
+        }
+        updatePlayerDisplay();
+    }
+
+    const checkGameOver = () => {
+        let winner = _getWinner();
+        if (!winner) return;
+        _gameOver(winner);
     }
 
     

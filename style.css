@@ -73,13 +73,29 @@ select {
   }
 }
 
+/* END RESET */
+
+body {
+  padding: 1rem;
+}
+
+
+main {
+  display: flex;
+  gap: 1rem;
+}
+
 .container {
-    display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
 }
 
 .container>div {
-    border: 1px solid black;
-    padding: 1rem;
+  border: 1px solid black;
+  padding: 1rem;
+}
+
+.hidden {
+  display: none;
 }
