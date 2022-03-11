@@ -62,13 +62,14 @@ const gameState = (() => {
 
     const playerX = Player('X');
     const playerO = Player('O');
+    const playerNull = Player('');
 
     let isGameGoing = false;
     const getGameStatus = () => {
         return isGameGoing;
     }
 
-    let currentPlayer;
+    let currentPlayer = playerNull;
 
     
     //set up start button
@@ -134,10 +135,11 @@ const gameState = (() => {
 
     const checkGameOver = () => {
         let winner = _getWinner();
-        console.log(winner);
         if (!winner) return;
+        console.log(winner);
         console.log('game over');
-        currentPlayer = '';
+        currentPlayer = playerNull;
+        updatePlayerDisplay();
         isGameGoing = false;
     }
 
