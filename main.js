@@ -71,7 +71,6 @@ const gameState = (() => {
     const winnerDisplay = document.querySelector('.winnerDisplay');
     const startGameButton = document.querySelector('.startButton');
     const currentPlayerDisplay = document.querySelector('.playerDisplay');
-    const winnerElement = document.querySelector('.winner');
     
     //private functions
     const _showWinnerDisplay = () => {
@@ -109,13 +108,25 @@ const gameState = (() => {
                 return line[0];
             }
         } 
-        return false;
+        for (let line of lines) {
+            //check for tie
+            for (box of line) {
+                if (box == '') {
+                    return false
+                }
+            }
+        }
+        return 'tie';
     }
 
     const _gameOver = (winner) => {
         //does game over things
+        if (winner == 'tie') {
+            winnerDisplay.innerText = `It's a tie!`
+        } else {
+            winnerDisplay.innerText = `Winner: ${winner}`;
+        }
         _showWinnerDisplay();
-        winnerElement.innerText = winner;
         currentPlayer = playerNull;
         updatePlayerDisplay();
         isGameGoing = false;
